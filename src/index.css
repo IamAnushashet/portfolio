@@ -1,0 +1,322 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens                                                      */
+/*  Dark is the default. [data-theme="light"] swaps the whole palette. */
+/*  .scene-dark pins a subtree (the hero scene) to the dark palette.   */
+/* ------------------------------------------------------------------ */
+:root,
+.scene-dark {
+  --bg: #040c08;
+  --bg-soft: #08150e;
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-strong: rgba(255, 255, 255, 0.09);
+  --line: rgba(255, 255, 255, 0.13);
+  --ink: #effaf3;
+  --muted: #b5cbbd;
+  --faint: #8fa99a;
+  --brand: #4ade80;
+  --brand-2: #6ee7b7;
+  --accent: #5eead4;
+  --on-brand: #04140b;
+  --grad-a: #6ee7b7;
+  --grad-b: #22c55e;
+  --glow-a: rgba(34, 197, 94, 0.14);
+  --glow-b: rgba(94, 234, 212, 0.07);
+}
+
+[data-theme="light"] {
+  --bg: #f4fbf6;
+  --bg-soft: #e5f4ea;
+  --surface: rgba(255, 255, 255, 0.8);
+  --surface-strong: #ffffff;
+  --line: rgba(6, 78, 59, 0.16);
+  --ink: #0a2218;
+  --muted: #3f5a4c;
+  --faint: #566f61;
+  --brand: #047857;
+  --brand-2: #0f766e;
+  --accent: #0e7490;
+  --on-brand: #ffffff;
+  --grad-a: #047857;
+  --grad-b: #0f766e;
+  --glow-a: rgba(4, 120, 87, 0.1);
+  --glow-b: rgba(14, 116, 144, 0.07);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-accent: var(--accent);
+  --color-on-brand: var(--on-brand);
+}
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(60rem 36rem at 85% -8%, var(--glow-a), transparent 70%),
+    radial-gradient(48rem 32rem at -10% 40%, var(--glow-b), transparent 70%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+::selection {
+  background: var(--brand);
+  color: var(--on-brand);
+}
+
+@layer base {
+  a {
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button {
+    font: inherit;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  section {
+    position: relative;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 0.5rem;
+  }
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -4rem;
+  z-index: 200;
+  border-radius: 0.75rem;
+  background: var(--brand);
+  color: var(--on-brand);
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reusable pieces                                                    */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .grad-text {
+    background-image: linear-gradient(100deg, var(--brand), var(--brand-2) 55%, var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border-radius: 0.9rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease,
+      border-color 0.25s ease, background-color 0.25s ease;
+  }
+
+  .btn-primary {
+    color: var(--on-brand);
+    background: linear-gradient(135deg, var(--grad-a), var(--grad-b));
+    box-shadow: 0 12px 32px -14px var(--grad-a);
+    border: 1px solid transparent;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.07);
+    box-shadow: 0 16px 38px -14px var(--grad-a);
+  }
+
+  .btn-ghost {
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .btn-ghost:hover {
+    transform: translateY(-2px);
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+
+  .eyebrow::before {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 2rem;
+    background: var(--brand);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Animations                                                         */
+/* ------------------------------------------------------------------ */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes scroll-dot {
+  0% { transform: translateY(0); opacity: 1; }
+  80% { transform: translateY(14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes moon-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+.star {
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+
+@media (min-width: 640px) {
+  .float-card {
+    animation: float-y 6s ease-in-out infinite;
+  }
+}
+
+.caret {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  margin-left: 4px;
+  vertical-align: -0.12em;
+  background: var(--accent);
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+.scroll-dot {
+  animation: scroll-dot 1.8s ease-in-out infinite;
+}
+
+.moon-glow {
+  animation: moon-pulse 6s ease-in-out infinite;
+}
+
+.skills-marquee {
+  animation: marquee 42s linear infinite;
+}
+
+.skills-marquee:hover {
+  animation-play-state: paused;
+}
+
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reduced motion: no ambient loops, no smooth scrolling             */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .skills-marquee {
+    animation: none !important;
+    width: auto !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.75rem;
+  }
+
+  .marquee-dup {
+    display: none !important;
+  }
+
+  .marquee-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* Feathers the edges of the hero artwork so it melts into the card */
